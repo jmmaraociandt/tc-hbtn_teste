@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TesteEmailTest {
+class TesteEmail {
 
     @Test
     void testar_email_com_arroba() {
