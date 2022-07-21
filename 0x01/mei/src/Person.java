@@ -1,7 +1,7 @@
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.Date;
 
+@SuppressWarnings("deprecation")
 public class Person {
     private String name;
     private String surname;
