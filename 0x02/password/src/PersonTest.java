@@ -8,7 +8,7 @@ class PersonTest {
     private static Person person;
 
     @BeforeAll
-    public static void steup() {
+    public static void setup() {
         person = new Person();
     }
 
