@@ -1,43 +1,56 @@
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
-import java.util.Calendar;
-import java.util.Date;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SuppressWarnings("deprecation")
 class PersonTest {
     private static Person person;
 
     @BeforeAll
-    public static void setup() {
-        Date birthDate = new Date(2000, Calendar.JANUARY, 1);
-        person = new Person("Paul", "McCartney", birthDate, true, true, true);
+    public static void steup() {
+        person = new Person();
     }
 
-    @Test
-    void show_full_name() {
-        assertEquals("Paul McCartney", person.fullName());
+    @ParameterizedTest
+    @ValueSource(strings = {"PaulMcCartney2", "NeilArms2"})
+    void check_user_valid(String name) {
+        person.setName(name);
+        assertTrue(person.checkUser());
     }
 
-    @Test
-    void test_calculateYearlySalary() {
-        person.setSalary(1200);
-        assertEquals(14400, person.calculateYearlySalary());
+    @ParameterizedTest
+    @ValueSource(strings = {"Paul#McCartney", "Neil@Arms"})
+    void check_user_not_valid(String name) {
+        person.setName(name);
+        assertFalse(person.checkUser());
     }
 
-    @Test
-    void person_is_MEI() {
-        person.setAnotherCompanyOwner(false);
-        person.setPensioner(false);
-        person.setPublicServer(false);
-        assertTrue(person.isMEI());
+    @ParameterizedTest
+    @ValueSource(strings = {"123456789", "#$%1234"})
+    void does_not_have_letters(String password) {
+        person.setPassword(password);
+        assertFalse(person.checkPassword());
     }
 
-    @Test
-    void person_is_not_MEI() {
-        person.setAnotherCompanyOwner(true);
-        assertFalse(person.isMEI());
+    @ParameterizedTest
+    @ValueSource(strings = {"Abcabcdefgh@", "#hbtn@%tc"})
+    void does_not_have_numbers(String password) {
+        person.setPassword(password);
+        assertFalse(person.checkPassword());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"Abc@123", "12$@hbt"})
+    void does_not_have_eight_chars(String password) {
+        person.setPassword(password);
+        assertFalse(person.checkPassword());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"abC123456$", "Hbtn@1234", "Betty@1#2", "Hbtn@123"})
+    void check_password_valid(String password) {
+        person.setPassword(password);
+        assertTrue(person.checkPassword());
     }
 }
